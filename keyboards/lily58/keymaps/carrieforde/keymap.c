@@ -8,24 +8,13 @@
 #    include "ssd1306.h"
 #endif
 
-#ifdef RGBLIGHT_ENABLE
-// Following line allows macro to read current RGB settings
-extern rgblight_config_t rgblight_config;
-#endif
-
 extern uint8_t is_master;
 
 #define _QWERTY 0
 #define _LOWER 1
 #define _RAISE 2
-#define _ADJUST 3
 
-enum custom_keycodes {
-    QWERTY = SAFE_RANGE,
-    LOWER,
-    RAISE,
-    ADJUST,
-};
+enum custom_keycodes { QWERTY = SAFE_RANGE, LOWER, RAISE };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -49,17 +38,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * ,-----------------------------------------.                    ,-----------------------------------------.
      * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * |      |      |  Up  |      |      |      |                    |      |   7  |  8   |   9  |      |      |
+     * |      |      |      |  Up  |      |      |                    |      |   7  |  8   |   9  |      |      |
      * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * |      | Left | Down |Right |      |      |-------.    ,-------|      |   4  |   5  |   6  |      |      |
+     * |      |      | Left | Down |Right |      |-------.    ,-------|      |   4  |   5  |   6  |      |      |
      * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
      * |      |      |      |      |      |      |-------|    |-------|      |   1  |   2  |   3  |      |  \   |
      * `-----------------------------------------/       /     \      \-----------------------------------------'
-     *                   |      |      |      | /       /       \Enter \  |  0   |   .  |Enter |
+     *                   |      |      |      | /       /       \Enter \  |  0   |   .  |BackSP|
      *                   |      |      |      |/       /         \      \ |      |      |      |
      *                   `----------------------------'           '------''--------------------'
      */
-    [_LOWER] = LAYOUT(_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_UP, _______, _______, _______, _______, KC_P7, KC_P8, KC_P9, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RIGHT, _______, _______, _______, KC_P4, KC_P5, KC_P6, _______, _______, KC_TRNS, _______, _______, _______, _______, _______, _______, _______, _______, KC_P1, KC_P2, KC_P3, _______, _______, _______, _______, KC_TRNS, _______, KC_ENT, KC_P0, KC_PDOT, KC_PENT),
+    [_LOWER] = LAYOUT(_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_UP, _______, _______, _______, KC_P7, KC_P8, KC_P9, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RIGHT, _______, _______, KC_P4, KC_P5, KC_P6, _______, _______, KC_TRNS, _______, _______, _______, _______, _______, _______, _______, _______, KC_P1, KC_P2, KC_P3, _______, KC_BSLS, _______, _______, KC_TRNS, _______, KC_ENT, KC_P0, KC_PDOT, KC_BSPC),
     /* RAISE
      * ,-----------------------------------------.                    ,-----------------------------------------.
      * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
@@ -74,40 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                   |      |      |      |/       /         \      \ |      |      |      |
      *                   `----------------------------'           '------''--------------------'
      */
-
-    [_RAISE] = LAYOUT(_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MS_U, _______, _______, _______, _______, _______, KC_UP, _______, _______, _______, _______, KC_MS_L, KC_MS_D, KC_MS_R, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RIGHT, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______),
-    /* ADJUST
-     * ,-----------------------------------------.                    ,-----------------------------------------.
-     * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
-     * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
-     * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
-     * |      |      |      |      |      |      |-------.    ,-------|      |      |RGB ON| HUE+ | SAT+ | VAL+ |
-     * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
-     * |      |      |      |      |      |      |-------|    |-------|      |      | MODE | HUE- | SAT- | VAL- |
-     * `-----------------------------------------/       /     \      \-----------------------------------------'
-     *                   | LAlt | LGUI |LOWER | /Space  /       \Enter \  |RAISE |BackSP| RGUI |
-     *                   |      |      |      |/       /         \      \ |      |      |      |
-     *                   `----------------------------'           '------''--------------------'
-     */
-    [_ADJUST] = LAYOUT(XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, _______, _______, _______, _______, _______, _______, _______, _______)};
-
-int RGB_current_mode;
-
-// Setting ADJUST layer RGB back to default
-void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
-    if (IS_LAYER_ON(layer1) && IS_LAYER_ON(layer2)) {
-        layer_on(layer3);
-    } else {
-        layer_off(layer3);
-    }
-}
-
-void matrix_init_user(void) {
-#ifdef RGBLIGHT_ENABLE
-    RGB_current_mode = rgblight_config.mode;
-#endif
-}
+    [_RAISE] = LAYOUT(_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MS_U, _______, _______, _______, _______, _______, KC_UP, _______, _______, _______, _______, KC_MS_L, KC_MS_D, KC_MS_R, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RIGHT, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______)};
 
 // SSD1306 OLED update loop, make sure to enable OLED_DRIVER_ENABLE=yes in rules.mk
 #ifdef OLED_DRIVER_ENABLE
@@ -162,28 +118,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case LOWER:
             if (record->event.pressed) {
                 layer_on(_LOWER);
-                update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
             } else {
                 layer_off(_LOWER);
-                update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
             }
             return false;
             break;
         case RAISE:
             if (record->event.pressed) {
                 layer_on(_RAISE);
-                update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
             } else {
                 layer_off(_RAISE);
-                update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
-            }
-            return false;
-            break;
-        case ADJUST:
-            if (record->event.pressed) {
-                layer_on(_ADJUST);
-            } else {
-                layer_off(_ADJUST);
             }
             return false;
             break;
