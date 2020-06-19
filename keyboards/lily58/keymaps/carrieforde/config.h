@@ -30,3 +30,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define TAPPING_FORCE_HOLD
 #define TAPPING_TERM 200
+
+#define AUTO_SHIFT_TIMEOUT 150
