@@ -16,6 +16,12 @@ extern uint8_t is_master;
 
 enum custom_keycodes { QWERTY = SAFE_RANGE, LOWER, RAISE };
 
+// Tap Dance declarations
+enum { TD_X_CUT, TD_C_COPY, TD_V_PASTE };
+
+// Tap Dance definitions
+qk_tap_dance_action_t tap_dance_actions[] = {[TD_X_CUT] = ACTION_TAP_DANCE_DOUBLE(KC_X, LCMD(KC_X)), [TD_C_COPY] = ACTION_TAP_DANCE_DOUBLE(KC_C, LCMD(KC_C)), [TD_V_PASTE] = ACTION_TAP_DANCE_DOUBLE(KC_V, LCMD(KC_V))};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* QWERTY
