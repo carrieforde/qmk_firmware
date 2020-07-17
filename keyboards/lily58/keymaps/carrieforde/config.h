@@ -32,3 +32,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_TERM 200
 
 #define AUTO_SHIFT_TIMEOUT 150
+
+// Underglow
+#undef RGBLED_NUM
+#define RGBLED_NUM 10  // Number of LEDs
+#define RGBLIGHT_ANIMATIONS
+#define RGBLIGHT_SLEEP
+#define RGBLED_SPLIT \
+    { 5, 5 }
