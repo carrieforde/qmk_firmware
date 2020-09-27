@@ -35,8 +35,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Underglow
 #undef RGBLED_NUM
-#define RGBLED_NUM 10  // Number of LEDs
+#define RGBLED_NUM 14  // Number of LEDs
 #define RGBLIGHT_ANIMATIONS
 #define RGBLIGHT_SLEEP
 #define RGBLED_SPLIT \
-    { 5, 5 }
+    { 7, 7 }
