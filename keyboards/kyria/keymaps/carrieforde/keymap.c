@@ -17,6 +17,10 @@
 
 enum layers { _QWERTY = 0, _LOWER, _RAISE, _ADJUST };
 
+enum custom_keycodes {
+    SCREENSHOT = SAFE_RANGE
+}
+
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 #define ADJUST MO(_ADJUST)
@@ -203,3 +207,17 @@ void encoder_update_user(uint8_t index, bool clockwise) {
 }
 #endif
 //
+
+bool process_record_user(uint16_t keycode) {
+    switch (keycode) {
+        case SCREENSHOT:
+            if (record->event.pressed) {
+                // Prepare screenshot
+                SEND_STRING(SS_LCTL(SS_LSFT("4")))
+            }
+
+            break;
+    }
+
+    return true;
+}
