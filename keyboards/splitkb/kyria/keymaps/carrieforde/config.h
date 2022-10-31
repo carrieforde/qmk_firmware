@@ -1,4 +1,4 @@
-/* Copyright 2019 Thomas Baart <thomas@splitkb.com>
+/* Copyright 2022 Thomas Baart <thomas@splitkb.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,22 +16,18 @@
 
 #pragma once
 
-#ifdef OLED_DRIVER_ENABLE
-#    define OLED_DISPLAY_128X64
+#ifdef RGBLIGHT_ENABLE
+// #    define RGBLIGHT_ANIMATIONS
+#    define RGBLIGHT_HUE_STEP  16
+#    define RGBLIGHT_SAT_STEP  16
+#    define RGBLIGHT_VAL_STEP  16
+#    define RGBLIGHT_LIMIT_VAL 150
 #endif
 
-#ifdef RGBLIGHT_ENABLE
-#    define RGBLIGHT_ANIMATIONS
-#    define RGBLIGHT_HUE_STEP 8
-#    define RGBLIGHT_SAT_STEP 8
-#    define RGBLIGHT_VAL_STEP 8
-#endif
+// Lets you roll mod-tap keys
+#define IGNORE_MOD_TAP_INTERRUPT
 
 #define TAPPING_FORCE_HOLD
-#define TAPPING_TERM 200
+#define TAPPING_TERM 150
 
 #define AUTO_SHIFT_TIMEOUT 150
-
-// If you are using an Elite C rev3 on the slave side, uncomment the lines below:
-// #define SPLIT_USB_DETECT
-// #define NO_USB_STARTUP_CHECK
