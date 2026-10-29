@@ -23,10 +23,12 @@ enum layers {
     _ADJUST,
 };
 
+enum custom_keycodes {
+    GLOBE = SAFE_RANGE,
+};
+
 
 // Aliases for readability
-#define QWERTY   DF(_QWERTY)
-
 #define SYM      MO(_SYM)
 #define NUM      MO(_NUM)
 #define FKEYS    MO(_FUNCTION)
@@ -38,8 +40,9 @@ enum layers {
 // Tap for backspace, hold for Option
 #define BSPC_OPT MT(MOD_RALT, KC_BSPC)
 
-// Screenshot
-#define SHOT LSG_T(KC_4)
+// Screenshot toolbar (Cmd+Shift+5); screen area capture (Cmd+Shift+4) on the NUM layer
+#define SHOT LSG(KC_5)
+#define SHOT_AREA LSG(KC_4)
 
 // Screen recording
 #define REC LSG_T(KC_5)
@@ -65,8 +68,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
      KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,                                        KC_Y,   KC_U ,  KC_I ,   KC_O ,  KC_P ,KC_MINUS,
      CTL_ESC , KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,  KC_K ,   KC_L ,KC_SCLN,KC_QUOTE,
-     SC_LSPO , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC,KC_CAPS,     ADJUST , KC_RBRC, KC_N,   KC_M ,KC_COMM, KC_DOT ,KC_SLSH, SC_RSPC,
-                                KC_LOPT , KC_LCMD,  SYM  , KC_SPC , FKEYS ,     SYM    , KC_ENT , NUM ,BSPC_OPT, KC_APP
+     SC_LSPO , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC,KC_CAPS,     ADJUST , FKEYS  , KC_N,   KC_M ,KC_COMM, KC_DOT ,KC_SLSH, SC_RSPC,
+                                KC_LOPT , KC_LCMD,  SYM  , KC_SPC , SHOT  ,     GLOBE  , KC_ENT , NUM ,BSPC_OPT, KC_APP
     ),
 
 /*
@@ -86,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       _______,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                                        KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_DEL,
       _______, KC_MINS,  KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS,                                     KC_PDOT,    KC_4,    KC_5,    KC_6, KC_PMNS, KC_PSLS,
       _______,  KC_ESC, KC_LCMD, KC_LOPT, KC_CAPS, KC_DQUO, _______, KC_SCRL, _______, _______,    KC_0,    KC_1,    KC_2,    KC_3, KC_PPLS, KC_PAST,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+                                 _______, _______, _______, _______,SHOT_AREA, _______, _______, _______, _______, _______
     ),
 
 /*
@@ -133,20 +136,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Adjust Layer: Default layer settings, RGB
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |      |QWERTY|      |      |                              |      |      |      |      |      |        |
+ * | EEClear|      |      |      |      |      |                              |      |      |      |      |      |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      |      |      |      |      |                              | TOG  | SAI  | HUI  | VAI  | MOD  |        |
+ * |        |      |      |      |      |      |                              | TOG  | SAI  | HUI  | VAI  | SPD+ |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |      |  |      |      |      | SAD  | HUD  | VAD  | RMOD |        |
+ * |        |      |      |      |      |      |      |      |  |      |      |      | SAD  | HUD  | VAD  | SPD- |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_ADJUST] = LAYOUT(
-      _______, _______, _______, QWERTY , _______, _______,                                    _______, RM_PREV, _______, RM_NEXT,  _______, _______,
-      _______, _______, _______, _______, _______, _______,                                    RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI,  RGB_MOD, _______,
-      _______, _______, _______, _______, _______, _______,_______, _______, _______, _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD, _______,
+      EE_CLR , _______, _______, _______, _______, _______,                                    _______, RM_PREV, _______, RM_NEXT,  _______, _______,
+      _______, _______, _______, _______, _______, _______,                                    RM_TOGG, RM_SATU, RM_HUEU, RM_VALU,  RM_SPDU, _______,
+      _______, _______, _______, _______, _______, _______,_______, _______, _______, _______, _______, RM_SATD, RM_HUED, RM_VALD,  RM_SPDD, _______,
                                  _______, _______, _______,_______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -251,4 +254,141 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [_FUNCTION]  = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
     [_ADJUST]    = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS), ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
 };
+#endif
+
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case GLOBE:
+            // Consumer usage 0x029D: AC Next Keyboard Layout Select (macOS Globe key)
+            host_consumer_send(record->event.pressed ? 0x029D : 0);
+            return false;
+    }
+    return true;
+}
+
+#ifdef OLED_ENABLE
+// Cat pet for the right (non-master) OLED: idles with a blink and tail flick.
+#    define CAT_WIDTH 64
+#    define CAT_COL 5
+#    define CAT_ROW 2
+#    define CAT_FRAME_MS 250
+
+// clang-format off
+static const char PROGMEM cat_frames[2][256] = {
+    {  // idle0
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0xff, 0x02, 0x82, 0xc4, 0xc4, 0x68, 0x70, 0x70, 0x20, 0x30, 0x30, 0x30, 0x30,
+        0x30, 0x30, 0x30, 0x30, 0x30, 0x20, 0x70, 0x70, 0x68, 0xc4, 0xc4, 0x82, 0x02, 0xff, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x20, 0x40,
+        0x40, 0x40, 0xfc, 0xff, 0x8f, 0x83, 0x01, 0x00, 0x00, 0x00, 0x38, 0x38, 0x00, 0x00, 0x00, 0x80,
+        0x80, 0x80, 0x00, 0x00, 0x00, 0x38, 0x38, 0x00, 0x00, 0x00, 0x01, 0x83, 0x8f, 0xff, 0xfc, 0x40,
+        0x40, 0xc0, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x04, 0x04,
+        0x04, 0x04, 0x03, 0x03, 0x07, 0x8e, 0xdc, 0xf8, 0x70, 0x30, 0x30, 0x20, 0x60, 0x60, 0x64, 0x64,
+        0x63, 0x64, 0x64, 0x60, 0x60, 0x20, 0x30, 0x30, 0x70, 0xf8, 0xdc, 0x8e, 0x07, 0x03, 0x03, 0x04,
+        0x84, 0xe4, 0x3f, 0x0c, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0xfe, 0xff, 0x83, 0x21, 0x70, 0xf8, 0xf8, 0xfc, 0xf8, 0xf8, 0x70, 0x20, 0x00,
+        0x00, 0x00, 0x20, 0x70, 0xf8, 0xf8, 0xfc, 0xf8, 0xf8, 0x70, 0x21, 0x83, 0xff, 0xfe, 0x38, 0x0e,
+        0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    },
+    {  // idle1
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0xff, 0x02, 0x82, 0xc4, 0xc4, 0x68, 0x70, 0x70, 0x20, 0x30, 0x30, 0x30, 0x30,
+        0x30, 0x30, 0x30, 0x30, 0x30, 0x20, 0x70, 0x70, 0x68, 0xc4, 0xc4, 0x82, 0x02, 0xff, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x20, 0x40,
+        0x40, 0x40, 0xfc, 0xff, 0x8f, 0x83, 0x01, 0x00, 0x00, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x80,
+        0x80, 0x80, 0x00, 0x00, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x01, 0x83, 0x8f, 0xff, 0xfc, 0x40,
+        0x40, 0x40, 0x20, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x04, 0x04,
+        0x04, 0x04, 0x03, 0x03, 0x07, 0x8e, 0xdc, 0xf8, 0x70, 0x30, 0x30, 0x20, 0x60, 0x60, 0x64, 0x64,
+        0x63, 0x64, 0x64, 0x60, 0x60, 0x20, 0x30, 0x30, 0x70, 0xf8, 0xdc, 0x8e, 0x07, 0x03, 0x03, 0x04,
+        0x04, 0x04, 0x04, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0xfe, 0xff, 0x83, 0x21, 0x70, 0xf8, 0xf8, 0xfc, 0xf8, 0xf8, 0x70, 0x20, 0x00,
+        0x00, 0x00, 0x20, 0x70, 0xf8, 0xf8, 0xfc, 0xf8, 0xf8, 0x70, 0x21, 0x83, 0xff, 0xfe, 0x60, 0x60,
+        0x60, 0x30, 0x30, 0x30, 0x18, 0x18, 0x18, 0x0c, 0x06, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    }
+};
+// clang-format on
+
+static void render_cat(void) {
+    static uint32_t frame_timer = 0;
+    static uint8_t  step        = 0;
+
+    if (timer_elapsed32(frame_timer) < CAT_FRAME_MS) {
+        return;
+    }
+    frame_timer = timer_read32();
+    step ^= 1;
+
+    const char *frame = cat_frames[step];
+    for (uint8_t page = 0; page < 4; page++) {
+        oled_set_cursor(CAT_COL, CAT_ROW + page);
+        oled_write_raw_P(frame + page * CAT_WIDTH, CAT_WIDTH);
+    }
+}
+
+static void render_status(void) {
+    oled_set_cursor(0, 0);
+    oled_write_P(PSTR("Layer: "), false);
+    switch (get_highest_layer(layer_state | default_layer_state)) {
+        case _QWERTY:
+            oled_write_P(PSTR("QWERTY\n"), false);
+            break;
+        case _NUM:
+            oled_write_P(PSTR("NUM\n"), false);
+            break;
+        case _SYM:
+            oled_write_P(PSTR("Sym\n"), false);
+            break;
+        case _FUNCTION:
+            oled_write_P(PSTR("Function\n"), false);
+            break;
+        case _ADJUST:
+            oled_write_P(PSTR("Adjust\n"), false);
+            break;
+        default:
+            oled_write_P(PSTR("Undefined\n"), false);
+    }
+
+    uint8_t mods = get_mods() | get_oneshot_mods();
+    oled_write_P((mods & MOD_MASK_SHIFT) ? PSTR("SHFT ") : PSTR("     "), false);
+    oled_write_P((mods & MOD_MASK_CTRL) ? PSTR("CTRL ") : PSTR("     "), false);
+    oled_write_P((mods & MOD_MASK_ALT) ? PSTR("OPT ") : PSTR("    "), false);
+    oled_write_P((mods & MOD_MASK_GUI) ? PSTR("CMD\n") : PSTR("   \n"), false);
+
+    led_t led_usb_state = host_keyboard_led_state();
+    oled_write_P(led_usb_state.caps_lock ? PSTR("CAPLCK\n") : PSTR("      \n"), false);
+}
+
+bool oled_task_user(void) {
+    if (is_keyboard_master()) {
+        render_status();
+    } else {
+        render_cat();
+    }
+    return false;
+}
+#endif
+
+#ifdef RGB_MATRIX_ENABLE
+// Underglow LEDs follow the base HSV at a fixed hue offset, so purple keys (hue 191) get pink underglow (hue 234).
+#    define UNDERGLOW_HUE_OFFSET 43
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    if (!rgb_matrix_is_enabled()) {
+        return true;
+    }
+
+    RGB underglow = hsv_to_rgb((HSV){rgb_matrix_get_hue() + UNDERGLOW_HUE_OFFSET, rgb_matrix_get_sat(), rgb_matrix_get_val()});
+    for (uint8_t i = led_min; i < led_max; i++) {
+        if (HAS_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW)) {
+            rgb_matrix_set_color(i, underglow.r, underglow.g, underglow.b);
+        }
+    }
+    return true;
+}
 #endif
