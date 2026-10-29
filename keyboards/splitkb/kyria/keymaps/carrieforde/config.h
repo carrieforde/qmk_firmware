@@ -36,3 +36,4 @@
 #endif
 
 #define TAPPING_TERM 175
+#define ENCODER_DIRECTION_FLIP
